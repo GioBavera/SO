@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advertencia</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+            background-image: url('https://images.unsplash.com/photo-1659480142923-0cd01191e0e9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); /* Cambia esta URL por tu imagen */
+            background-size: cover; /* Asegura que la imagen cubra toda la pantalla */
+            background-position: center; /* Centra la imagen */
+            text-align: center; /* Centra el texto */
+        }
+        .form-container {
+            background: rgba(0, 0, 0, 0.8); 
+            border-radius: 10px;
+            padding: 30px;
+            width: 90%; /* Ajustamos el ancho */
+            max-width: 1000px; /* Maximo de 1000px */
+            text-align: left;
+            margin: 0 auto; /* Centra el contenedor */
+        }
+        button {
+            background: #8d6e63;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 16px;
+            color: #fff;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background: #6f4f47;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div>
+            <h1>¡Error!</h1>
+            <p>El ID que intentas agregar ya existe en la base de datos.</p>
+            <hr>
+            <p>Por favor, intenta con un ID diferente.</p>
+        </div>
+        <div class="d-flex justify-content-center gap-3" style="display: flex; justify-content: center; gap: 1rem;">
+            <form action="{{ url_for('agregar') }}" method="GET" style="margin: 0;">
+                <button type="submit" class="btn btn-primary" style="padding: 10px 20px; font-size: 16px;">Reintentar</button>
+            </form>
+            <form action="{{ url_for('listar') }}" method="GET" style="margin: 0;">
+                <button type="submit" class="btn btn-secondary" style="padding: 10px 20px; font-size: 16px;">Inicio</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

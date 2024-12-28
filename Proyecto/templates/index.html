@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+
+            /*FONDO PERSONALIZADO*/
+            background-image: url('https://images.unsplash.com/photo-1659480142923-0cd01191e0e9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); /* Cambia esta URL por tu imagen */
+            background-size: cover; /* Asegura que la imagen cubra toda la pantalla */
+            background-position: center; /* Centra la imagen */
+            text-align: center; /* Centra el texto */
+        }
+
+        .form-container {
+            background: rgba(0, 0, 0, 0.8); 
+            border-radius: 10px;
+            padding: 30px;
+            width: 90%; 
+            text-align: left;
+            margin: 0 auto; /* Centra el contenedor */
+            /*max-width: 2000px;*/
+        }
+        /*Configuracion botones*/
+        button {   
+            background: #8d6e63;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 16px;
+            color: #fff;
+            font-size: 14px;
+        }
+        button:hover {      /*Sombra al posicionar el cursor encima*/
+            background: #6f4f47;
+        }
+
+        /*Configuracion Tabla*/
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #131313;
+            border-radius: 5px;
+        }
+        /* Caja de los encabezados */
+        th { 
+            background-color: #8d6e63;
+            color: white;
+        }
+        /* Caja de los contenidos */
+        td {
+            background-color: rgba(255, 255, 255, 0.8);
+            font-family: 'Arial', sans-serif;
+            color: #242424;
+        }
+
+        /* Cuando tenemos una tabla con muchas entradas, hay que habilitar 
+        el scroll para poder ver todo correctamente */
+        .table-container {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .table-container::-webkit-scrollbar {
+            width: 10px; 
+        }
+        .table-container::-webkit-scrollbar-thumb {
+            background: #ffffff; 
+            border-radius: 5px; 
+        }
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: #c9c9c9; 
+        }
+        .table-container::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1); 
+            border-radius: 5px;
+        }
+
+        /*Configuracion de la barra de busqueda*/
+        .search-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .search-bar form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-bar select, .search-bar input {
+            border-radius: 5px;
+            padding: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .search-bar input {
+            width: 200px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1 class="text-center">Lista de Juegos de Mesa</h1>
+        <div class="search-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <!-- Barra de busqueda con Buscar y Limpiar -->
+            <div style="display: flex; gap: 10px;">
+                <form action="{{ url_for('buscar') }}" method="POST" style="display: flex; gap: 5px;">
+                    <select name="criterio" class="form-control">
+                        <option value="nombre">Nombre</option>
+                        <option value="pais_origen">País</option>
+                        <option value="costo_usd">Precio</option>
+                    </select>
+                    <input type="text" name="query" placeholder="Buscar..." class="form-control">
+                    <button type="submit" class="btn btn-secondary btn-sm">Buscar</button>
+                </form>
+                <form action="{{ url_for('listar') }}" method="GET">
+                    <button type="submit" class="btn btn-light btn-sm">Limpiar</button>
+                </form>
+            </div>
+        
+            <!-- Botón Añadir -->
+            <form action="{{ url_for('agregar') }}" method="GET">
+                <button type="submit" class="btn btn-primary btn-sm">Añadir</button>
+            </form>
+        </div>
+        <hr>
+        <!-- Tabla de juegos -->
+        <div class="table-container">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Jugadores (Min/Max)</th>
+                        <th>Limite de Edades</th>
+                        <th>Pais de Origen</th>
+                        <th>Costo (USD)</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for juego in datos %}
+                        <tr>
+                            <td>{{ juego['id'] }}</td>
+                            <td>{{ juego['nombre'] }}</td>
+                            <td>{{ juego['jugadores_min'] }} / {{ juego['jugadores_max'] }}</td>
+                            <td>{{ juego['limite_edades'] }}</td>
+                            <td>{{ juego['pais_origen'] }}</td>
+                            <td>{{ juego['costo_usd'] }}</td>
+                            <td>
+                                <!-- Botón para editar -->
+                                <form action="{{ url_for('editar', id=juego['id']) }}" method="GET" style="display:inline;">
+                                    <button type="submit" class="btn btn-warning btn-sm">Editar</button>
+                                </form>
+                                <!-- Botón para eliminar -->
+                                <form action="{{ url_for('eliminar', id=juego['id']) }}" method="POST" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <hr>
+    </div>
+</body>
+</html>

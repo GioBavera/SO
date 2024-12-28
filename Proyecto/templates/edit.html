@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+
+            /* Fondo personalizado */
+            background-image: url('https://images.unsplash.com/photo-1659480142923-0cd01191e0e9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+        }
+
+        .form-container {
+            background: rgba(0, 0, 0, 0.8); 
+            border-radius: 10px;
+            padding: 30px;
+            width: 90%;
+            max-width: 450px;
+            text-align: left;
+            margin: 0 auto;
+        }
+
+        button {
+            background: #4ac35c;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 16px;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background: #3fa44e;
+        }
+
+        .cancel-button {
+            background-color: #f44336;
+            margin-top: 10px;
+            text-decoration: none;
+            display: inline-block;
+            padding: 8px 16px;
+            color: #fff;
+            font-size: 14px;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        .cancel-button:hover {
+            background-color: #d32f2f;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            width: 40%;
+            font-weight: bold;
+            color: #f3f3f3;
+        }
+
+        .input-group input {
+            width: 55%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h1 class="text-center mt-4">Editando juego...</h1>
+        <hr>
+        <br>
+        <form action="{{ url_for('editar', id=juego['id']) }}" method="POST">
+            <div class="input-group">
+                <label for="id">ID: </label>
+                <input type="text" id="id" name="id" value="{{ juego['id'] }}" readonly>
+            </div>
+            <div class="input-group">
+                <label for="nombre">Nombre: </label>
+                <input type="text" id="nombre" name="nombre" value="{{ juego['nombre'] }}" required>
+            </div>
+            <div class="input-group">
+                <label for="jugadores_min">Jugadores Minimos:</label>
+                <input type="number" id="jugadores_min" name="jugadores_min" value="{{ juego['jugadores_min'] }}" required>
+            </div>
+            <div class="input-group">
+                <label for="jugadores_max">Jugadores Maximos:</label>
+                <input type="number" id="jugadores_max" name="jugadores_max" value="{{ juego['jugadores_max'] }}" required>
+            </div>
+            <div class="input-group">
+                <label for="limite_edades">Edad Minima: </label>
+                <input type="text" id="limite_edades" name="limite_edades" value="{{ juego['limite_edades'] }}" required>
+            </div>
+            <div class="input-group">
+                <label for="pais_origen">Pais de Origen: </label>
+                <input type="text" id="pais_origen" name="pais_origen" value="{{ juego['pais_origen'] }}" required>
+            </div>
+            <div class="input-group">
+                <label for="costo_usd">Costo (USD): </label>
+                <input type="number" id="costo_usd" name="costo_usd" value="{{ juego['costo_usd'] }}" required>
+            </div>
+            <hr>
+            <div class="btn-group">
+                <button type="submit">Guardar</button>
+                <a href="{{ url_for('listar') }}" class="cancel-button">Cancelar</a>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
